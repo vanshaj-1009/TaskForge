@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TaskForge - Modern Task Management</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Authentication Modal -->
@@ -38,6 +41,65 @@
         </div>
     </div>
 
+    <!-- Main App -->
+    <div id="app" class="hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <h1>TaskForge</h1>
+                    </div>
+                    <div class="user-menu">
+                        <span id="userName" class="user-name"></span>
+                        <button id="logoutBtn" class="btn-secondary">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Task Controls -->
+                <section class="task-controls">
+                    <div class="controls-row">
+                        <button id="addTaskBtn" class="btn-primary">+ Add Task</button>
+                        <div class="filters">
+                            <select id="statusFilter" class="filter-select">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                            <select id="priorityFilter" class="filter-select">
+                                <option value="all">All Priority</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                            <select id="sortBy" class="filter-select">
+                                <option value="date-desc">Newest First</option>
+                                <option value="date-asc">Oldest First</option>
+                                <option value="priority">Priority</option>
+                                <option value="status">Status</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Task List -->
+                <section class="task-list">
+                    <div id="tasksContainer" class="tasks-container">
+                        <div id="emptyState" class="empty-state">
+                            <h3>No tasks yet</h3>
+                            <p>Create your first task to get started!</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
 
         
 
