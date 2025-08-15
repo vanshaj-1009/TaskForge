@@ -183,3 +183,68 @@ textarea {
   resize: vertical;
   min-height: 80px;
 }
+
+
+/* Header */
+.header {
+  background-color: var(--surface);
+  border-bottom: 1px solid #e2e8f0;
+  padding: var(--space-md) 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo h1 {
+  color: var(--primary);
+  margin: 0;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Main Content */
+.main {
+  padding: var(--space-xl) 0;
+}
+
+
+
+/* Task Controls */
+.task-controls {
+  margin-bottom: var(--space-xl);
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.filters {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  min-width: 140px;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 14px;
+}
