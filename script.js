@@ -25,6 +25,35 @@ class TaskForge {
     }
 
 
+
+
+
+    // Storage Management
+    loadFromStorage() {
+        const userData = localStorage.getItem("taskforge_user")
+        const tasksData = localStorage.getItem("taskforge_tasks")
+
+        if (userData) {
+        this.currentUser = JSON.parse(userData)
+        }
+
+        if (tasksData) {
+        this.tasks = JSON.parse(tasksData)
+        }
+    }
+
+    saveToStorage() {
+        if (this.currentUser) {
+        localStorage.setItem("taskforge_user", JSON.stringify(this.currentUser))
+        }
+        localStorage.setItem("taskforge_tasks", JSON.stringify(this.tasks))
+    }
+
+
+
+
+
+    
 }
 
 
