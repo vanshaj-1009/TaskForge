@@ -464,3 +464,92 @@ textarea {
   margin-bottom: var(--space-xs);
   color: var(--text-secondary);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+
+  .controls-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters {
+    justify-content: center;
+  }
+
+  .filter-select {
+    flex: 1;
+    min-width: auto;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .task-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .task-actions {
+    align-self: flex-end;
+  }
+
+  .task-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    margin: var(--space-sm);
+    max-width: none;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .user-menu {
+    gap: var(--space-sm);
+  }
+
+  .user-name {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+
+  .task-card {
+    padding: var(--space-md);
+  }
+
+  .modal-body {
+    padding: var(--space-md);
+  }
+
+  .modal-header {
+    padding: var(--space-md);
+  }
+}
