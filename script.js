@@ -49,7 +49,21 @@ class TaskForge {
         localStorage.setItem("taskforge_tasks", JSON.stringify(this.tasks))
     }
 
+    // Authentication
+    checkAuthState() {
+        if (!this.currentUser) {
+        this.tasks = []
+        }
+        this.showApp()
+    }
 
+    showAuthModal() {
+        document.getElementById("authModal").classList.remove("hidden")
+    }
+
+    hideAuthModal() {
+        document.getElementById("authModal").classList.add("hidden")
+    }
 
 
 
