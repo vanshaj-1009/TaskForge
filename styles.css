@@ -369,3 +369,18 @@ textarea {
   color: var(--priority-high);
   font-weight: 500;
 }
+
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl);
+  color: var(--text-muted);
+}
+
+.empty-state h3 {
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+
