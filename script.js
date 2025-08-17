@@ -5,6 +5,170 @@ class TaskForge {
 
 
 
+    
+
+
+
+
+
+    // Storage Management
+    loadFromStorage() {
+        const userData = localStorage.getItem("taskforge_user")
+        const tasksData = localStorage.getItem("taskforge_tasks")
+
+        if (userData) {
+        this.currentUser = JSON.parse(userData)
+        }
+
+        if (tasksData) {
+        this.tasks = JSON.parse(tasksData)
+        }
+    }
+
+    saveToStorage() {
+        if (this.currentUser) {
+        localStorage.setItem("taskforge_user", JSON.stringify(this.currentUser))
+        }
+        localStorage.setItem("taskforge_tasks", JSON.stringify(this.tasks))
+    }
+
+    // Authentication
+    checkAuthState() {
+        if (!this.currentUser) {
+        this.tasks = []
+        }
+        this.showApp()
+    }
+
+    showAuthModal() {
+        document.getElementById("authModal").classList.remove("hidden")
+    }
+
+    hideAuthModal() {
+        document.getElementById("authModal").classList.add("hidden")
+    }
+
+    showApp() {
+    document.getElementById("app").classList.remove("hidden")
+    document.getElementById("authModal").classList.add("hidden")
+
+    const userNameEl = document.getElementById("userName")
+    const logoutBtn = document.getElementById("logoutBtn")
+    const addTaskBtn = document.getElementById("addTaskBtn")
+
+    if (this.currentUser) {
+      userNameEl.textContent = this.currentUser.name
+      logoutBtn.textContent = "Logout"
+      addTaskBtn.textContent = "+ Add Task"
+    } else {
+      userNameEl.textContent = "Guest User"
+      logoutBtn.textContent = "Sign In"
+      addTaskBtn.textContent = "+ Sign In to Add Tasks"
+    }
+
+    this.renderTasks()
+    }
+
+
+    register(email, password, name) {
+        // Simulate registration
+        const user = {
+        id: Date.now(),
+        email,
+        name,
+        createdAt: new Date().toISOString(),
+        }
+
+        this.currentUser = user
+        this.saveToStorage()
+        this.showApp()
+    }
+
+    login(email, password) {
+        // Simulate login - in real app, this would validate against a backend
+        const user = {
+        id: Date.now(),
+        email,
+        name: email.split("@")[0], // Use email prefix as name
+        createdAt: new Date().toISOString(),
+        }
+
+        this.currentUser = user
+        this.saveToStorage()
+        this.showApp()
+    }
+
+    logout() {
+        if (this.currentUser) {
+        this.currentUser = null
+        localStorage.removeItem("taskforge_user")
+        localStorage.removeItem("taskforge_tasks")
+        this.tasks = []
+        this.showApp()
+        } else {
+        // If not logged in, show auth modal
+        this.showAuthModal()
+        }
+    }
+
+    // Task Management
+    createTask(taskData) {
+        if (!this.currentUser) {
+        this.showAuthModal()
+        return
+        }
+
+        const task = {
+        id: Date.now(),
+        title: taskData.title,
+        description: taskData.description,
+        priority: taskData.priority,
+        status: taskData.status,
+        dueDate: taskData.dueDate,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        userId: this.currentUser.id,
+        }
+
+        this.tasks.push(task)
+        this.saveToStorage()
+        this.renderTasks()
+    }
+
+    updateTask(taskId, taskData) {
+        if (!this.currentUser) {
+        this.showAuthModal()
+        return
+        }
+
+        const taskIndex = this.tasks.findIndex((task) => task.id === taskId)
+        if (taskIndex !== -1) {
+        this.tasks[taskIndex] = {
+            ...this.tasks[taskIndex],
+            ...taskData,
+            updatedAt: new Date().toISOString(),
+        }
+        this.saveToStorage()
+        this.renderTasks()
+        }
+    }
+
+    deleteTask(taskId) {
+        if (!this.currentUser) {
+        this.showAuthModal()
+        return
+        }
+
+        if (confirm("Are you sure you want to delete this task?")) {
+        this.tasks = this.tasks.filter((task) => task.id !== taskId)
+        this.saveToStorage()
+        this.renderTasks()
+        }
+    }
+
+
+
+
     // Task Rendering
     renderTasks() {
         const container = document.getElementById("tasksContainer")
@@ -112,114 +276,6 @@ class TaskForge {
         document.getElementById("loadingOverlay").classList.add("hidden")
     }
 
-
-
-
-
-    // Storage Management
-    loadFromStorage() {
-        const userData = localStorage.getItem("taskforge_user")
-        const tasksData = localStorage.getItem("taskforge_tasks")
-
-        if (userData) {
-        this.currentUser = JSON.parse(userData)
-        }
-
-        if (tasksData) {
-        this.tasks = JSON.parse(tasksData)
-        }
-    }
-
-    saveToStorage() {
-        if (this.currentUser) {
-        localStorage.setItem("taskforge_user", JSON.stringify(this.currentUser))
-        }
-        localStorage.setItem("taskforge_tasks", JSON.stringify(this.tasks))
-    }
-
-    // Authentication
-    checkAuthState() {
-        if (!this.currentUser) {
-        this.tasks = []
-        }
-        this.showApp()
-    }
-
-    showAuthModal() {
-        document.getElementById("authModal").classList.remove("hidden")
-    }
-
-    hideAuthModal() {
-        document.getElementById("authModal").classList.add("hidden")
-    }
-
-    showApp() {
-    document.getElementById("app").classList.remove("hidden")
-    document.getElementById("authModal").classList.add("hidden")
-
-    const userNameEl = document.getElementById("userName")
-    const logoutBtn = document.getElementById("logoutBtn")
-    const addTaskBtn = document.getElementById("addTaskBtn")
-
-    if (this.currentUser) {
-      userNameEl.textContent = this.currentUser.name
-      logoutBtn.textContent = "Logout"
-      addTaskBtn.textContent = "+ Add Task"
-    } else {
-      userNameEl.textContent = "Guest User"
-      logoutBtn.textContent = "Sign In"
-      addTaskBtn.textContent = "+ Sign In to Add Tasks"
-    }
-
-    this.renderTasks()
-    }
-
-
-    register(email, password, name) {
-        // Simulate registration
-        const user = {
-        id: Date.now(),
-        email,
-        name,
-        createdAt: new Date().toISOString(),
-        }
-
-        this.currentUser = user
-        this.saveToStorage()
-        this.showApp()
-    }
-
-    login(email, password) {
-        // Simulate login - in real app, this would validate against a backend
-        const user = {
-        id: Date.now(),
-        email,
-        name: email.split("@")[0], // Use email prefix as name
-        createdAt: new Date().toISOString(),
-        }
-
-        this.currentUser = user
-        this.saveToStorage()
-        this.showApp()
-    }
-
-    logout() {
-        if (this.currentUser) {
-        this.currentUser = null
-        localStorage.removeItem("taskforge_user")
-        localStorage.removeItem("taskforge_tasks")
-        this.tasks = []
-        this.showApp()
-        } else {
-        // If not logged in, show auth modal
-        this.showAuthModal()
-        }
-    }
-
-    
-
-
-    
 }
 
 
