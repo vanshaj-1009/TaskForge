@@ -276,6 +276,110 @@ class TaskForge {
         document.getElementById("loadingOverlay").classList.add("hidden")
     }
 
+
+
+
+
+
+
+
+    showTaskModal(task = null) {
+        if (!this.currentUser) {
+        this.showAuthModal()
+        return
+        }
+
+        const modal = document.getElementById("taskModal")
+        const title = document.getElementById("taskModalTitle")
+        const form = document.getElementById("taskForm")
+
+        if (task) {
+        // Edit mode
+        title.textContent = "Edit Task"
+        document.getElementById("taskTitle").value = task.title
+        document.getElementById("taskDescription").value = task.description || ""
+        document.getElementById("taskPriority").value = task.priority
+        document.getElementById("taskStatus").value = task.status
+        document.getElementById("taskDueDate").value = task.dueDate || ""
+        this.editingTaskId = task.id
+        } else {
+        // Add mode
+        title.textContent = "Add New Task"
+        form.reset()
+        document.getElementById("taskPriority").value = "medium"
+        document.getElementById("taskStatus").value = "pending"
+        this.editingTaskId = null
+        }
+
+        modal.classList.remove("hidden")
+        document.getElementById("taskTitle").focus()
+    }
+
+    hideTaskModal() {
+        document.getElementById("taskModal").classList.add("hidden")
+        document.getElementById("taskForm").reset()
+        this.editingTaskId = null
+    }
+
+    handleTaskSubmit(e) {
+        e.preventDefault()
+
+        const taskData = {
+        title: document.getElementById("taskTitle").value,
+        description: document.getElementById("taskDescription").value,
+        priority: document.getElementById("taskPriority").value,
+        status: document.getElementById("taskStatus").value,
+        dueDate: document.getElementById("taskDueDate").value,
+        }
+
+        if (this.editingTaskId) {
+        this.updateTask(this.editingTaskId, taskData)
+        } else {
+        this.createTask(taskData)
+        }
+
+        this.hideTaskModal()
+    }
+    
+
+    handleFilterChange(e) {
+        const filterId = e.target.id
+        const value = e.target.value
+
+        switch (filterId) {
+        case "statusFilter":
+            this.filters.status = value
+            break
+        case "priorityFilter":
+            this.filters.priority = value
+            break
+        case "sortBy":
+            this.filters.sortBy = value
+            break
+        }
+
+        this.renderTasks()
+    }
+
+    handleTaskAction(e) {
+        const taskCard = e.target.closest(".task-card")
+        if (!taskCard) return
+
+        const taskId = Number.parseInt(taskCard.dataset.taskId)
+        const task = this.tasks.find((t) => t.id === taskId)
+
+        if (!this.currentUser) {
+        this.showAuthModal()
+        return
+        }
+
+        if (e.target.classList.contains("edit-task")) {
+        this.showTaskModal(task)
+        } else if (e.target.classList.contains("delete-task")) {
+        this.deleteTask(taskId)
+        }
+    }
+
 }
 
 
