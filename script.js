@@ -1,15 +1,26 @@
 // TaskForge - Task Management Application
 class TaskForge {
 
+    constructor() {
+        this.currentUser = null
+        this.tasks = []
+        this.editingTaskId = null
+        this.filters = {
+        status: "all",
+        priority: "all",
+        sortBy: "date-desc",
+        }
 
+        this.demoTasks = []
 
+        this.init()
+    }
 
-
-    
-
-
-
-
+    init() {
+        this.loadFromStorage()
+        this.bindEvents()
+        this.showApp()
+    }
 
     // Storage Management
     loadFromStorage() {
