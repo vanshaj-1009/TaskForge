@@ -276,7 +276,101 @@ class TaskForge {
         document.getElementById("loadingOverlay").classList.add("hidden")
     }
 
+    // Event Binding
+    bindEvents() {
+        // Auth Modal Events
+        document.getElementById("closeModal").addEventListener("click", () => {
+        this.hideAuthModal()
+        })
 
+        document.getElementById("authSwitchBtn").addEventListener("click", this.toggleAuthMode.bind(this))
+        document.getElementById("authForm").addEventListener("submit", this.handleAuthSubmit.bind(this))
+
+        // App Events
+        document.getElementById("logoutBtn").addEventListener("click", this.logout.bind(this))
+        document.getElementById("addTaskBtn").addEventListener("click", () => {
+        if (this.currentUser) {
+            this.showTaskModal()
+        } else {
+            this.showAuthModal()
+        }
+        })
+
+        // Task Modal Events
+        document.getElementById("closeTaskModal").addEventListener("click", this.hideTaskModal.bind(this))
+        document.getElementById("cancelTask").addEventListener("click", this.hideTaskModal.bind(this))
+        document.getElementById("taskForm").addEventListener("submit", this.handleTaskSubmit.bind(this))
+
+        // Filter Events
+        document.getElementById("statusFilter").addEventListener("change", this.handleFilterChange.bind(this))
+        document.getElementById("priorityFilter").addEventListener("change", this.handleFilterChange.bind(this))
+        document.getElementById("sortBy").addEventListener("change", this.handleFilterChange.bind(this))
+
+        // Task Actions (Event Delegation)
+        document.getElementById("tasksContainer").addEventListener("click", this.handleTaskAction.bind(this))
+
+        // Modal Close on Outside Click
+        document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("modal")) {
+            if (e.target.id === "taskModal") {
+            this.hideTaskModal()
+            } else if (e.target.id === "authModal") {
+            this.hideAuthModal()
+            }
+        }
+        })
+    }
+
+    toggleAuthMode() {
+        const isLogin = document.getElementById("authTitle").textContent.includes("Welcome")
+        const title = document.getElementById("authTitle")
+        const submitBtn = document.getElementById("authSubmit")
+        const switchText = document.getElementById("authSwitchText")
+        const switchBtn = document.getElementById("authSwitchBtn")
+        const nameGroup = document.getElementById("nameGroup")
+
+        if (isLogin) {
+        // Switch to Register
+        title.textContent = "Create Account"
+        submitBtn.textContent = "Sign Up"
+        switchText.textContent = "Already have an account?"
+        switchBtn.textContent = "Sign In"
+        nameGroup.style.display = "block"
+        document.getElementById("name").required = true
+        } else {
+        // Switch to Login
+        title.textContent = "Welcome to TaskForge"
+        submitBtn.textContent = "Sign In"
+        switchText.textContent = "Don't have an account?"
+        switchBtn.textContent = "Sign Up"
+        nameGroup.style.display = "none"
+        document.getElementById("name").required = false
+        }
+
+        // Clear form
+        document.getElementById("authForm").reset()
+    }
+
+    handleAuthSubmit(e) {
+        e.preventDefault()
+
+        const email = document.getElementById("email").value
+        const password = document.getElementById("password").value
+        const name = document.getElementById("name").value
+        const isRegister = document.getElementById("authTitle").textContent.includes("Create")
+
+        this.showLoading()
+
+        // Simulate API call delay
+        setTimeout(() => {
+        if (isRegister) {
+            this.register(email, password, name)
+        } else {
+            this.login(email, password)
+        }
+        this.hideLoading()
+        }, 1000)
+    }
 
 
 
